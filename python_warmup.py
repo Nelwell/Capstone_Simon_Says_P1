@@ -29,4 +29,4 @@ def check_bday_month_against_current_month(name):
         print('It\'s not quite your Birthday month yet.')
     return birthday_month
 
-main()
+main() # Call main function

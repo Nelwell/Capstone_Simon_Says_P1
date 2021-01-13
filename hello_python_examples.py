@@ -1,3 +1,5 @@
+# Here are some simple python feature examples
+
 print('Hello capstone!')
 
 # Variables

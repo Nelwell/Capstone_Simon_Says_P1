@@ -4,7 +4,7 @@ classes = []
 
 class_name = input('Name a class you are taking this semester. If none, press Enter to exit. ')
 
-while class_name:
+while class_name: # Continues until entered value is empty
     classes.append(class_name)
     class_name = input('Any other classes? Press Enter if finished. ')
 
