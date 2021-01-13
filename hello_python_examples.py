@@ -125,7 +125,7 @@ with open('schools.txt') as f:
 # Functions
 
 def get_name():
-    print('Hello, please enter your ame!')
+    print('Hello, please enter your name!')
     name = input('Your name is: ')
     return name
 
