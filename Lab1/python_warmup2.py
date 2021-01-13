@@ -10,3 +10,5 @@ while class_name: # Continues until entered value is empty
 
 for index, c in enumerate(classes):
     print(f'{index +1}. {c}')
+
+# print(*class_name, sep = '\n')
