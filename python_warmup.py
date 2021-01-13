@@ -31,3 +31,5 @@ def check_bday_month_against_current_month():
     return birthday_month
 
 is_it_your_bday_month = check_bday_month_against_current_month()
+
+print(f'Oh and by the way, there are {len(name)} letters in your name.')
