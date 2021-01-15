@@ -1,5 +1,11 @@
 # This program takes any sentence and converts it to camel case, with first word being lowercase and first letter of subsequent words capitalized
 
+import os
+# import time
+
+clear = os.system('cls')
+# time.sleep(2) 
+
 sentence = input('Write a sentence: ') # original sentence
 
 # if sentence[0].isalpha() == False
