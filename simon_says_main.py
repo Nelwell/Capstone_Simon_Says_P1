@@ -6,15 +6,11 @@ import random
 import colorama
 import transitions
 import tutorial
+from text_formatting import Bold_text
 from colorama import Fore, Style  # https://www.youtube.com/watch?v=u51Zjlnui4Y
 
 
-colorama.init(autoreset=False)  # enables easy-calling of colors
-
-
-# provides terminal output-bolding functionality
-class Bold_text:
-    BOLD = '\033[1m'  # https://stackoverflow.com/questions/8924173/how-do-i-print-bold-text-in-python
+colorama.init()  # enables easy-calling of colors
 
 
 def main():
@@ -23,7 +19,7 @@ def main():
     simon_pattern = []
     time.sleep(.5)
     print(f'{Fore.LIGHTBLUE_EX}{Bold_text.BOLD}{transitions.introduction}')
-    beginner = input('Would you like to go through the tutorial? Y or N ').upper()
+    beginner = input(f'{Fore.RESET}Would you like to go through the tutorial? Y or N ').upper()
     if beginner == 'Y':
         tutorial.instruction()
     elif beginner == 'N':
@@ -35,7 +31,7 @@ def main():
 
 # creates random color pattern, gets longer each call
 def simon_round(stage, colors, simon_pattern):
-    stage = stage + 1
+    stage += 1
     # time.sleep(.5)
     print(f'\n{Fore.LIGHTRED_EX}{Bold_text.BOLD}ROUND {stage}', end='')
     time.sleep(1.5)
