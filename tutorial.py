@@ -1,25 +1,31 @@
 # module to handle tutorial-related instructions
 import time
-import random
 import colorama
-
-from colorama import Fore, Style  # https://www.youtube.com/watch?v=u51Zjlnui4Y
-
 import transitions
+import pattern_builder
 from text_formatting import Bold_text
+from colorama import Fore  # https://www.youtube.com/watch?v=u51Zjlnui4Y
+import webbrowser
+
+
 
 colorama.init()  # enables easy-calling of colors
 
-general_instruction = f'\n{Fore.RESET}Just like the classic Simon Says game from the 70s, the goal is to repeat ' \
-                      f'Simon\'s \npattern, which will be displayed as a set of colors ({Fore.RED}R, {Fore.GREEN}G, ' \
-                      f'{Fore.BLUE}B, {Fore.RESET}or {Fore.YELLOW}Y{Fore.RESET}).  Each time \n' \
+general_instruction = f'\n{Fore.RESET}Overview:\nJust like the classic Simon Says game from the 70s, the goal is to ' \
+                      f'repeat Simon\'s \npattern, which will be displayed as a set of colors ({Fore.RED}R, ' \
+                      f'{Fore.GREEN}G, {Fore.BLUE}B, {Fore.RESET}or {Fore.YELLOW}Y{Fore.RESET}).  Each time \n' \
                       f'you successfully match the pattern you\'ll move to the next round and the pattern \n' \
-                      f'will get longer.  Press Enter when you\'re ready to move onto the first round.'
+                      f'will get longer.'
 
 
 def instruction():
     print(general_instruction)
-    input()
+    see_video = input('\nWould you like to see a short (45 sec) video of the classic game? Y or Press Enter to \n'
+                      'continue with the tutorial. ').upper()
+    if see_video == 'Y':
+        webbrowser.open('https://www.youtube.com/watch?v=vLi1qnRmpe4')  # opens up link to youtube video
+        input('Press Enter when finished watching. ')
+        time.sleep(.5)
     transitions.next_round()
     stage = 0
     colors = ['R', 'G', 'B', 'Y']  # possible colors in simon pattern
@@ -33,27 +39,14 @@ def simon_round(stage, colors, simon_pattern):
     if stage < 2:
         stage += 1
     else:
-        conclude_tutorial()
+        conclude_tutorial()  # ends tutorial after second round
     print(f'\n{Fore.LIGHTRED_EX}{Bold_text.BOLD}ROUND {stage} ', end='')
     time.sleep(1)
     print(f'{Fore.RESET}- This is what round you\'re in', end='')
     time.sleep(5)
     print('', end='\r')
     while True:
-        simon_pattern.append(random.choice(colors))  # https://stackoverflow.com/questions/306400/how-to-randomly-select-an-item-from-a-list
-        for color in simon_pattern:
-            if color == 'R':
-                time.sleep(.8)  # delay before displaying next color
-                print(f'{Fore.RED}{Bold_text.BOLD}{color}{Style.BRIGHT}', end=' ')
-            elif color == 'G':
-                time.sleep(.8)
-                print(f'{Fore.GREEN}{Bold_text.BOLD}{color}{Style.BRIGHT}', end=' ')
-            elif color == 'B':
-                time.sleep(.8)
-                print(f'{Fore.BLUE}{Bold_text.BOLD}{color}{Style.BRIGHT}', end=' ')
-            else:
-                time.sleep(.8)
-                print(f'{Fore.YELLOW}{Bold_text.BOLD}{color}{Style.BRIGHT}', end=' ')
+        pattern_builder.pattern_builder(colors, simon_pattern)  # calls function to create simon's pattern
         time.sleep(1)
         print(f'{Fore.RESET}- This is Simon\'s pattern. Remember it.', end='')
         time.sleep(7)
@@ -82,11 +75,14 @@ def player_round(stage, colors, simon_pattern):
         print('', end='\r')
         transitions.next_round()
     else:
-        print('Incorrect pattern')  # if doesn't match, calls game over function
+        # if doesn't match
+        print('\nIncorrect pattern, but for tutorial purposes let\'s continue. This would normally result in a '
+              '\"Game Over\".\n')
+        time.sleep(3)
 
     simon_round(stage, colors, player_pattern)  # passes player data to simon
 
 
 def conclude_tutorial():
-    input('This concludes the tutorial. Press Enter to continue to the game. ')
+    input('This concludes the tutorial. Press Enter to return to the game. ')
     print(f'{Fore.LIGHTBLUE_EX}{Bold_text.BOLD}{transitions.introduction}')

@@ -2,12 +2,12 @@
 One error will result in game over. """
 
 import time
-import random
 import colorama
 import transitions
 import tutorial
+import pattern_builder
 from text_formatting import Bold_text
-from colorama import Fore, Style  # https://www.youtube.com/watch?v=u51Zjlnui4Y
+from colorama import Fore  # https://www.youtube.com/watch?v=u51Zjlnui4Y
 
 
 colorama.init()  # enables easy-calling of colors
@@ -23,7 +23,7 @@ def main():
     if beginner == 'Y':
         tutorial.instruction()
     elif beginner == 'N':
-        time.sleep(2.5)
+        time.sleep(2)
         simon_round(stage, colors, simon_pattern)
     else:
         print('Please choose Y or N')
@@ -32,40 +32,23 @@ def main():
 # creates random color pattern, gets longer each call
 def simon_round(stage, colors, simon_pattern):
     stage += 1
-    # time.sleep(.5)
     print(f'\n{Fore.LIGHTRED_EX}{Bold_text.BOLD}ROUND {stage}', end='')
     time.sleep(1.5)
     print('', end='\r')
     while True:
-        simon_pattern.append(random.choice(colors))  # https://stackoverflow.com/questions/306400/how-to-randomly-select-an-item-from-a-list
-        for color in simon_pattern:
-            if color == 'R':
-                time.sleep(.8)  # delay before displaying next color
-                print(f'{Fore.RED}{Bold_text.BOLD}{color}{Style.BRIGHT}', end=' ')
-            elif color == 'G':
-                time.sleep(.8)
-                print(f'{Fore.GREEN}{Bold_text.BOLD}{color}{Style.BRIGHT}', end=' ')
-            elif color == 'B':
-                time.sleep(.8)
-                print(f'{Fore.BLUE}{Bold_text.BOLD}{color}{Style.BRIGHT}', end=' ')
-            else:
-                time.sleep(.8)
-                print(f'{Fore.YELLOW}{Bold_text.BOLD}{color}{Style.BRIGHT}', end=' ')
-        time.sleep(2)
-        print('', end='\r')  # hides simon's pattern after set amount of time / https://stackoverflow.com/
-        # questions/44565704/how-to-clear-only-last-one-line-in-python-output-console
-
+        pattern_builder.pattern_builder(colors, simon_pattern)
         player_round(stage, colors, simon_pattern)  # calls function to handle player's turn
 
 
 # allows player input for an attempt to match simon's color pattern
 def player_round(stage, colors, simon_pattern):
-    countdown = [3, 2, 1]
+    countdown = ['Ready', 'Set', 'GO']
     for count in countdown:
-        time.sleep(.40)
-        print(f'{Fore.LIGHTGREEN_EX}{Bold_text.BOLD}{count}...', end='')
-    time.sleep(.40)
-    print(f'{Fore.LIGHTGREEN_EX}{Bold_text.BOLD}GO!', end='')  # formats 'GO' message
+        time.sleep(.50)
+        if count == 'GO':
+            print(f'{Fore.LIGHTGREEN_EX}{Bold_text.BOLD}{count}!', end='')
+        else:
+            print(f'{Fore.LIGHTGREEN_EX}{Bold_text.BOLD}{count}...', end='')
     time.sleep(.40)
     print('', end='\r')
     player_turn = input('')
