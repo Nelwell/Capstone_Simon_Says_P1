@@ -19,6 +19,9 @@ def main(tutorial_completed):
     simon_pattern = []
     time.sleep(.5)
     print(f'{Fore.LIGHTBLUE_EX}{Bold_text.BOLD}{transitions.introduction}')
+    for sound in transitions.intro_sound:
+        time.sleep(.40)
+        winsound.PlaySound(sound, winsound.SND_ASYNC)
     if not tutorial_completed:  # checks if player has been through tutorial already, skips question if so
         beginner = input(f'{Fore.RESET}Would you like to go through the tutorial? Y or N ').upper()
         if beginner == 'Y':
@@ -84,7 +87,7 @@ def player_round(stage, colors, simon_pattern):
 # gives player option to play again or not
 def game_over():
     winsound.PlaySound('audio\\incorrect.wav', winsound.SND_ASYNC)
-    print(f'{Fore.RESET} Over')
+    print(f'{Fore.RESET}Game Over')
     play_again = input('Play again? Y or N ').upper()
     if play_again == 'Y':
         main(tutorial_completed=True)

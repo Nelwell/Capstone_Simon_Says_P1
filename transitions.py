@@ -1,6 +1,7 @@
 # transition variables
 import colorama
 from colorama import Fore
+import winsound
 
 colorama.init(autoreset=False)
 
@@ -21,6 +22,11 @@ yellow_text = getattr(Fore, color_names[3])
 set_text_color = [red_text, green_text, blue_text, yellow_text]
 
 round_transition = '***************************************************************************************************'
+
+intro_sound = ['audio\\red_sound.wav',
+                'audio\\green_sound.wav',
+                'audio\\yellow_sound.wav',
+                'audio\\blue_sound.wav']
 
 
 # displays transition pattern between rounds
