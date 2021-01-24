@@ -8,7 +8,7 @@ import colorama
 import transitions
 import pattern_builder
 from text_formatting import Bold_text, general_instruction
-from colorama import Fore  # https://www.youtube.com/watch?v=u51Zjlnui4Y
+from colorama import Fore, Back  # https://www.youtube.com/watch?v=u51Zjlnui4Y
 
 colorama.init()  # enables easy-calling of colors
 
@@ -65,6 +65,7 @@ def player_round(stage, colors, simon_pattern):
     player_turn = input('')
     player_pattern = ' '.join(player_turn.upper()).split()  # creates space between each char, then splits at each space
     if player_pattern == simon_pattern:  # checks for match against simon's color pattern
+        winsound.PlaySound('audio\\correct.wav', winsound.SND_ASYNC)
         if stage < 5:
             print(f'{Fore.LIGHTBLUE_EX}{Bold_text.BOLD}Correct!', end='')
         elif stage > 4 < 10:
@@ -87,8 +88,8 @@ def player_round(stage, colors, simon_pattern):
 # gives player option to play again or not
 def game_over():
     winsound.PlaySound('audio\\incorrect.wav', winsound.SND_ASYNC)
-    print(f'{Fore.RESET}Game Over')
-    play_again = input('Play again? Y or N ').upper()
+    print(f'{Fore.BLACK}{Back.RED}Game Over{Back.RESET}')
+    play_again = input(f'{Fore.RESET}Play again? Y or N ').upper()
     if play_again == 'Y':
         main(tutorial_completed=True)
     else:
@@ -118,7 +119,7 @@ def tutorial_intro():
 
 # creates random color pattern, gets longer each call
 def tutorial_simon_round(stage, colors, simon_pattern):
-    if stage < 2:
+    if stage < 3:
         stage += 1
     else:
         conclude_tutorial()  # ends tutorial after second round
@@ -159,16 +160,16 @@ def tutorial_player_round(stage, colors, simon_pattern):
     else:
         # if doesn't match
         print('\nIncorrect pattern, but for tutorial purposes let\'s continue. Normally, this would result in '
-              '\"Game Over\".\n')
+              f'\"Game Over\".\n')
         time.sleep(3.5)
 
     tutorial_simon_round(stage, colors, simon_pattern)  # passes player data to simon
 
 
 def conclude_tutorial():
-    input(f'{Fore.RESET}You made it through the tutorial! In the real game, the pattern will continue '
-          f'to get longer and round will go as long as you can match the pattern. How many rounds '
-          f'can you survive? Press Enter to continue with the game. ')
+    input(f'{Fore.RESET}\nYou made it through the tutorial! In the real game, the pattern will continue '
+          f'\nto get longer and rounds will go as long as you can match the pattern. How many rounds '
+          f'\ncan you survive? Press Enter to continue with the game. ')
     main(tutorial_completed=True)
 
 
