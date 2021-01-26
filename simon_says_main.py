@@ -55,42 +55,67 @@ def simon_round(stage, colors, simon_pattern):
 def player_round(stage, colors, simon_pattern):
     countdown = ['Ready', 'Set', 'GO']
     for count in countdown:
-        time.sleep(.5)
+        time.sleep(.4)
         if count == 'GO':
             print(f'{Fore.LIGHTGREEN_EX}{Bold_text.BOLD}{count}!', end='')
         else:
             print(f'{Fore.LIGHTGREEN_EX}{Bold_text.BOLD}{count}...', end='')
-    time.sleep(.4)
+    time.sleep(.3)
     print('', end='\r')
     player_turn = input('')
     player_pattern = ' '.join(player_turn.upper()).split()  # creates space between each char, then splits at each space
     if player_pattern == simon_pattern:  # checks for match against simon's color pattern
         winsound.PlaySound('audio\\correct.wav', winsound.SND_ASYNC)
-        if stage < 5:
+        if stage < 3:
             print(f'{Fore.LIGHTBLUE_EX}{Bold_text.BOLD}Correct!', end='')
-        elif stage > 4 < 10:
+        elif 2 < stage < 6:
             print(f'{Fore.LIGHTBLUE_EX}{Bold_text.BOLD}Keep Going!', end='')
-        elif stage > 9 < 15:
+        elif 5 < stage < 10:
             print(f'{Fore.LIGHTBLUE_EX}{Bold_text.BOLD}You\'re on fire!', end='')
-        elif stage > 14 < 100:
+        elif 9 < stage < 20:
             print(f'{Fore.LIGHTBLUE_EX}{Bold_text.BOLD}Unstoppable!!', end='')
-        elif stage > 99:
+        elif stage > 19:
             print(f'{Fore.LIGHTBLUE_EX}{Bold_text.BOLD}LEGENDARY!!!', end='')
         time.sleep(1.5)  # short delay before beginning next round
         print('', end='\r')
         transitions.next_round()
     else:
-        game_over()  # if doesn't match, calls game over function
+        game_over(stage)  # if doesn't match, calls game over function
 
     simon_round(stage, colors, player_pattern)  # passes player data to simon
 
 
 # gives player option to play again or not
-def game_over():
+def game_over(score):
     winsound.PlaySound('audio\\incorrect.wav', winsound.SND_ASYNC)
-    print(f'{Fore.BLACK}{Back.RED}Game Over{Back.RESET}')
-    play_again = input(f'{Fore.RESET}Play again? Y or N ').upper()
-    if play_again == 'Y':
+    print(f'\n{Fore.BLACK}{Back.RED} Game Over {Back.RESET}')
+    time.sleep(1.5)
+    scoring(score)
+
+
+def scoring(score):
+    score -= 1  # makes your scores feel more awesome, score 0 still possible
+    print(f'\n{Fore.BLUE}{Back.BLACK} Score this game: {score} {Fore.RESET}{Back.RESET}')
+    time.sleep(1)
+    with open('simon_scores.txt', 'a') as f:  # creates/opens file and puts in append mode
+        f.write(f'{score} ')  # adds latest score to score sheet
+
+    with open('simon_scores.txt') as f:  # opens file for reading
+        scores = f.read()  # puts scoring data from txt file into list
+    f.close()
+    score_list = ''.join(scores).split()
+    print(f'\n{Fore.BLUE}{Back.BLACK} ---YOUR TOP 10 SCORES---\n')
+    make_integers = sorted(([int(i) for i in score_list]), reverse=True)  # list comp to convert to integers and sort
+    back_to_string_scores = [str(s) for s in make_integers]  # list comp to convert back to string for printing
+    for index, s in enumerate(back_to_string_scores[:10]):  # prints high scores, numbered up to 10
+        print(f' {index + 1}. {s}pts')
+    time.sleep(1.5)
+    play_again()
+
+
+def play_again():
+    just_one_more = input(f'{Fore.RESET}{Back.RESET}\nPlay again? Y or N ').upper()
+    if just_one_more == 'Y':
         main(tutorial_completed=True)
     else:
         print('Thanks for playing!')
@@ -119,7 +144,7 @@ def tutorial_intro():
 
 # creates random color pattern, gets longer each call
 def tutorial_simon_round(stage, colors, simon_pattern):
-    if stage < 3:
+    if stage < 2:
         stage += 1
     else:
         conclude_tutorial()  # ends tutorial after second round
@@ -153,12 +178,14 @@ def tutorial_player_round(stage, colors, simon_pattern):
     player_turn = input(f'{Fore.RESET}Don\'t worry about capitalization or spaces. Enter your response now: ')
     player_pattern = ' '.join(player_turn.upper()).split()  # creates space between each char, then splits at each space
     if player_pattern == simon_pattern:  # checks for match against simon's color pattern
+        winsound.PlaySound('audio\\correct.wav', winsound.SND_ASYNC)
         print(f'{Fore.LIGHTBLUE_EX}{Bold_text.BOLD}Correct! It\'s a match!', end='')
         time.sleep(1.5)  # short delay before beginning next round
         print('', end='\r')
         transitions.next_round()
     else:
         # if doesn't match
+        winsound.PlaySound('audio\\incorrect.wav', winsound.SND_ASYNC)
         print('\nIncorrect pattern, but for tutorial purposes let\'s continue. Normally, this would result in '
               f'\"Game Over\".\n')
         time.sleep(3.5)
@@ -168,8 +195,8 @@ def tutorial_player_round(stage, colors, simon_pattern):
 
 def conclude_tutorial():
     input(f'{Fore.RESET}\nYou made it through the tutorial! In the real game, the pattern will continue '
-          f'\nto get longer and rounds will go as long as you can match the pattern. How many rounds '
-          f'\ncan you survive? Press Enter to continue with the game. ')
+          f'to \nget longer each round and rounds will continue indefinitely as long as you can match '
+          f'\nthe pattern. How many rounds can you survive? Press Enter to continue with the game. ')
     main(tutorial_completed=True)
 
 

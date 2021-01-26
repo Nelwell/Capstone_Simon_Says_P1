@@ -1,10 +1,10 @@
 # transition variables
 import colorama
 from colorama import Fore
-import winsound
 
 colorama.init(autoreset=False)
 
+# title banner
 introduction = """
     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
   *                                                             *
@@ -23,10 +23,11 @@ set_text_color = [red_text, green_text, blue_text, yellow_text]
 
 round_transition = '***************************************************************************************************'
 
+# sound effects for each color
 intro_sound = ['audio\\red_sound.wav',
-                'audio\\green_sound.wav',
-                'audio\\yellow_sound.wav',
-                'audio\\blue_sound.wav']
+               'audio\\green_sound.wav',
+               'audio\\yellow_sound.wav',
+               'audio\\blue_sound.wav']
 
 
 # displays transition pattern between rounds
